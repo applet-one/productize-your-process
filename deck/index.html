@@ -79,7 +79,7 @@
   .layout-cover h1 { margin: 0; font-size: 228px; line-height: .86; }
   .layout-cover h1 .row { display: block; }
   .layout-cover .sub { margin-top: 28px; font-size: 44px; font-weight: 500; line-height: 1.25; }
-  .layout-cover .authors { display: flex; gap: 96px; align-items: flex-end; border-top: 2px solid var(--color-ink); padding-top: 22px; }
+  .layout-cover .authors { display: flex; gap: 96px; align-items: flex-start; border-top: 2px solid var(--color-ink); padding-top: 22px; }
   .layout-cover .authors .n { font-family: var(--font-display); font-weight: 900; font-size: 48px; text-transform: uppercase; line-height: 1; }
   .layout-cover .authors .r { font-family: var(--font-mono); font-size: 22px; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); margin-top: 8px; }
 
@@ -219,6 +219,8 @@
   .layout-closing .people .n { font-family: var(--font-display); font-weight: 900; font-size: 56px; text-transform: uppercase; line-height: 1; }
   .layout-closing .people .c { margin-top: 12px; font-family: var(--font-mono); font-size: 24px; letter-spacing: .12em; color: var(--mute-ink); }
   .layout-closing .people .c u { text-decoration: none; border-bottom: 2px solid var(--color-red); color: var(--color-chalk); }
+  .layout-closing .people .src { grid-column: 1 / -1; margin-top: -56px; }
+  .layout-closing .people .src a { color: inherit; text-decoration: none; }
 
   /* CHAIN (integrated view) */
   .layout-chain h2 { margin: 28px 0 36px; font-size: 112px; }
@@ -524,7 +526,7 @@
   </div>
   <div class="authors">
     <div><div class="n">Markus Andrezak</div><div class="r">überproduct</div></div>
-    <div><div class="n">Matthias Lübken</div><div class="r">tavon.ai</div></div>
+    <div><div class="n">Matthias Lübken</div><div class="r" style="display:flex;align-items:center;gap:16px"><img src="assets/Logo_AppletOne_standard.svg" alt="Applet.One" style="display:block;width:230px;height:auto;flex-shrink:0"><span>• tavon.ai</span></div></div>
   </div>
   
 </section>
@@ -1154,7 +1156,8 @@
     <path id="path10" fill="#f9d900" stroke="none" d="M 2370.780029 368.369995 L 2370.780029 99.890015 L 2375.639893 99.890015 L 2491.459961 368.369995 L 2542.889893 368.369995 L 2542.889893 84.910004 L 2516.969971 84.910004 L 2516.969971 352.98999 L 2512.110107 352.98999 L 2396.290039 84.910004 L 2344.870117 84.910004 L 2344.870117 368.369995 L 2370.780029 368.369995 L 2370.780029 368.369995 Z"/>
     <path id="path11" fill="#f9d900" stroke="none" d="M 2777.379883 368.369995 L 2777.379883 344.889984 L 2630.389893 344.889984 L 2630.389893 237.980011 L 2764.429932 237.980011 L 2764.429932 214.490005 L 2630.389893 214.490005 L 2630.389893 108.399994 L 2775.76001 108.399994 L 2775.76001 84.910004 L 2604.469971 84.910004 L 2604.469971 368.369995 L 2777.379883 368.369995 L 2777.379883 368.369995 Z"/>
 </svg>
- <u>matthias@tavon.ai</u></div></div>
+ <span>• tavon.ai · <u>matthias@tavon.ai</u></span></div></div>
+    <div class="c src">Slides &amp; source · <a href="https://github.com/applet-one/productize-your-process" target="_blank" rel="noopener"><u>github.com/applet-one/productize-your-process</u></a></div>
   </div>
   
 </section>
