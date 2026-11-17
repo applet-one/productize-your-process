@@ -1,0 +1,13 @@
+{
+  "name": "whom-we-talked-to",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-inputs.js",
+    "dev": "npm run build && applet dev",
+    "deploy": "npm run build && applet deploy",
+    "push": "applet push",
+    "pull": "applet pull"
+  }
+}

@@ -1,0 +1,2 @@
+# Used only by validation scripts and tests; the HTML viewer needs no setup.
+PyYAML>=6.0.2,<7
