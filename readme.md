@@ -2,6 +2,8 @@
 
 # Productize Your Process
 
+**[View the slides →](https://productize-your-process.applet.works)**
+
 ### How AI apps standardize ways of working
 
 **From a useful AI workflow on one person’s laptop to a shared app the whole team can use.**
@@ -43,7 +45,7 @@ The offline priority board needs **no server, installation, or account**.
 
 The browser reads the selected files locally; nothing is uploaded. See the [demo guide](demo/README.md) for browser support and details.
 
-To view the slides, open [productize-your-process.applet.works](https://productize-your-process.applet.works) or [`deck/index.html`](deck/index.html) in your browser.
+To view the slides locally, open [`deck/index.html`](deck/index.html) in your browser.
 
 ### Deploy the slide deck
 
