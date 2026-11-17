@@ -43,7 +43,18 @@ The offline priority board needs **no server, installation, or account**.
 
 The browser reads the selected files locally; nothing is uploaded. See the [demo guide](demo/README.md) for browser support and details.
 
-To view the slides, open [`deck/index.html`](deck/index.html) in your browser.
+To view the slides, open [productize-your-process.applet.works](https://productize-your-process.applet.works) or [`deck/index.html`](deck/index.html) in your browser.
+
+### Deploy the slide deck
+
+The repository root is a public Applet app that serves only `deck/`, including its images. No demo data is published.
+
+```sh
+npm run dev     # package the deck and run locally
+npm run deploy  # package the deck and publish with the Applet CLI
+```
+
+The build generates `deck-assets.js` from the original deck files; it is intentionally ignored by Git. Sign in with `applet login` before deploying.
 
 ## From analysis to a shared app
 
