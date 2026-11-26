@@ -480,10 +480,13 @@
  "Model drift: our observation, not a study. Same instructions, weeks later noticeably worse results. In tested, granular systems even a cheap model still works; in free-form development everything gets messy. Say it as experience, not as fact. Plant: 'an app is a product' — § 07 picks this up and follows it to the end.",
  "Clean handover. Markus steps back, Matthias takes the clicker.",
  "Matthias' half. Demo 2 turns Markus' local chain into an app and deploys it.",
- "Step 01 · Build, for yourself. The same app as on slide 22, before anyone else is in it: private, no comments, no team. What it gives you alone: the same inputs, the same steps and the same kind of result every run, plus your override with a reason. That is the reliability a chat does not give you. The same app, shared, comes early in § 06 (slide 22).",
+ "Step 01 · Build, for yourself. The same app as on slide 26, before anyone else is in it: private, no comments, no team. What it gives you alone: the same inputs, the same steps and the same kind of result every run, plus your override with a reason. That is the reliability a chat does not give you. The same app, shared, comes early in § 06 (slide 26).",
  "The stack behind 'simple and free' and 'shared apps need persistence'. A Durable Object = a bit of JavaScript plus its own SQLite database; the state lives with the code, so there is no separate web server or database to run. Cloudflare is the primary option: managed, free plan available. celld (Deno, Ryan Dahl, open source, v0.1.0 in Aug 2026) runs the same model on your own servers, storing each object's SQLite in an S3-compatible bucket. Be careful with claims: celld covers a large part of the Cloudflare APIs, not all of them, and its 'much cheaper at scale' numbers are the project's own.",
  "Matthias fills in the stack details. From the 1 Oct call: lightweight apps on Cloudflare Durable Objects, rights management on app and on the underlying data.",
- "TODO: shared app.",
+ "The interactive board: override a ranking and leave a comment. Next, explain what sharing it actually grants.",
+ "Two separate decisions: who may use the app, and what backend access comes with it. Start with app-managed authentication using standard libraries; central identity can come later. Editing and deployment access are assumed to be controlled. These are access-model examples, not a claim that native Applet sharing controls are shipped.",
+ "The modes apply per binding, not per app. A team connection can expose bounded feedback access without everyone having a source-system account, provided the provider permits delegated use. Personal tasks use each person's own connection; missing credentials mean connect your account, never fall back to the owner's. One app can mix both modes.",
+ "Design direction, not shipped native functionality. The trusted gateway verifies the caller and app access, resolves the connection, enforces operations and fixed scope, and audits the result. Credentials and policies stay outside editable app code. Allowed writes run immediately; no approval queue or simulated pending state. REST and MCP are connector implementation options. A customer can host the gateway and retain upstream credentials. This does not prevent the hosted app or platform from seeing permitted results.",
  "Examples from the 1 Oct and 5 Oct calls. Matthias decides which ones are his to tell.",
  "The second, bigger value. Sharing the result is level 1. Sharing the way of working is level 2.",
  "Show this only if the live demo is slow, or as the 'this is where we're going' picture before building. Note what's on it beyond the result: version, who it's shared with, comments, and Team B's fork question. Those are the seeds of § 06 and § 07.",
@@ -856,8 +859,85 @@
   <div class="mockcap">Interactive app. Overrides. Comments. Your reasoning.</div>
   <div class="slide-foot"><span>§ 05 · From skill to app</span><span class="pg">20</span></div>
 </section>
-<section class="layout-content" data-screen-label="21 Beyond the demo">
-  <div class="eyebrow"><span class="num">§ 05.05</span><span>Level 1 in the wild</span><span class="rule"></span></div>
+<section class="layout-two dual" data-screen-label="21 Sharing decisions">
+  <div class="eyebrow"><span class="num">§ 05.05</span><span>Sharing means making two decisions</span><span class="rule"></span></div>
+  <h2 class="display">Share the app. Decide what <span class="accent">comes with it.</span></h2>
+  <div class="cols">
+    <div class="col left">
+      <span class="label">App access</span>
+      <h3>Who gets in?</h3>
+      <ul>
+        <li class="frag frag-up">Hans and Erna are invited.</li>
+        <li class="frag frag-up">They sign in to use the board.</li>
+        <li class="frag frag-up">Start with app-managed login.<br>Centralize when needed.</li>
+      </ul>
+    </div>
+    <div class="col right">
+      <span class="label">Backend access</span>
+      <h3>What can they do?</h3>
+      <ul>
+        <li class="frag frag-up">Read the team’s feedback.</li>
+        <li class="frag frag-up">Change rankings and add comments.</li>
+        <li class="frag frag-up">No access to other teams’ data or source-system administration.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cap">Access to the app ≠ unrestricted access to its backends.</div>
+  <div class="slide-foot"><span>§ 05 · From skill to app</span><span class="pg">21</span></div>
+</section>
+<section class="layout-two dual ink" data-screen-label="22 Two connection modes">
+  <div class="eyebrow"><span class="num">§ 05.06</span><span>Whose backend account does the work?</span><span class="rule"></span></div>
+  <h2 class="display">The app brings access.<br>Or <span class="accent">you bring yours.</span></h2>
+  <div class="cols">
+    <div class="col left">
+      <span class="label">App connection</span>
+      <h3>The shared board.</h3>
+      <ul>
+        <li class="frag frag-up">A connection is explicitly granted to the app.</li>
+        <li class="frag frag-up">Hans and Erna can read the permitted team feedback.</li>
+        <li class="frag frag-up">No individual source-system accounts needed.</li>
+      </ul>
+    </div>
+    <div class="col right">
+      <span class="label">Per-user connection</span>
+      <h3>Your personal tasks.</h3>
+      <ul>
+        <li class="frag frag-up">Each person connects their own account.</li>
+        <li class="frag frag-up">Hans sees Hans’s tasks.<br>Erna sees Erna’s.</li>
+        <li class="frag frag-up">Sharing the app does not share the owner’s account.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cap">One app can use both. Each connection has explicit limits.</div>
+  <div class="slide-foot"><span>§ 05 · From skill to app</span><span class="pg">22</span></div>
+</section>
+<section class="layout-flow" data-screen-label="23 Controlled backend access">
+  <div class="eyebrow"><span class="num">§ 05.07</span><span>Design direction · Controlled backend access</span><span class="rule"></span></div>
+  <h2 class="display">Share capabilities.<br>Not <span class="accent">credentials.</span></h2>
+  <div class="flow">
+    <div class="box frag frag-up">
+      <div class="tg">01 · Shared app</div>
+      <div class="w">The team<br>uses it.</div>
+      <div class="d">Hans and Erna use the board.<br>The app requests an operation—not the backend keys.</div>
+    </div>
+    <div class="arr frag">→</div>
+    <div class="box human frag frag-up">
+      <div class="tg">02 · Trusted gateway</div>
+      <div class="w">The limits<br>stay here.</div>
+      <div class="d">Checks app and user access.<br>Limits actions and data.<br>Keeps backend credentials.</div>
+    </div>
+    <div class="arr frag">→</div>
+    <div class="box frag frag-up">
+      <div class="tg">03 · Backend systems</div>
+      <div class="w">Only what’s<br>permitted.</div>
+      <div class="d">Read Team A’s feedback: allowed.<br>Read Team B’s feedback or delete source records: denied.</div>
+    </div>
+  </div>
+  <div class="flowcap">REST or MCP underneath. Same access rules. Allowed actions run immediately.</div>
+  <div class="slide-foot"><span>§ 05 · From skill to app</span><span class="pg">23</span></div>
+</section>
+<section class="layout-content" data-screen-label="24 Beyond the demo">
+  <div class="eyebrow"><span class="num">§ 05.08</span><span>Level 1 in the wild</span><span class="rule"></span></div>
   <h2 class="display">Interactive beats <span class="accent">PDF.</span></h2>
   <p class="lede">Once deployment is trivial, a lot of documents turn out to be apps in disguise.</p>
   <ul>
@@ -866,27 +946,27 @@
     <li class="frag frag-up">A PM builds a <b>parts-availability app</b> for the team.</li>
     <li class="frag frag-up">HR builds an <b>onboarding app</b> instead of a static and boring Confluence page.</li>
   </ul>
-  <div class="slide-foot"><span>§ 05 · From skill to app</span><span class="pg">21</span></div>
+  <div class="slide-foot"><span>§ 05 · From skill to app</span><span class="pg">24</span></div>
 </section>
-<section class="layout-section ink" data-screen-label="22 Level 2">
+<section class="layout-section ink" data-screen-label="25 Level 2">
   <div class="eyebrow"><span class="num">§ 06</span><span>What sharing does to a team</span><span class="rule"></span></div>
   <div class="grow">
     <div class="super">Level 2: share how you work —</div>
     <h2 class="display"><span class="row">The app</span><span class="row accent">is the standard.</span></h2>
     <div class="subline">The moment you share it, the app changes. Suddenly you have to agree on what's in it.</div>
   </div>
-  <div class="slide-foot"><span>§ 06 · What sharing does</span><span class="pg">22</span></div>
+  <div class="slide-foot"><span>§ 06 · What sharing does</span><span class="pg">25</span></div>
 </section>
-<section class="layout-app" data-screen-label="23 Shared app">
+<section class="layout-app" data-screen-label="26 Shared app">
   <div class="eyebrow"><span class="num">§ 06.01</span><span>What Hans opens on Monday</span><span class="rule"></span></div>
   <h2 class="display">One link. The whole team <span class="accent">in it.</span></h2>
   <div style="flex:1;min-height:0;display:flex;justify-content:center;align-items:center">
     <img src="assets/priority-board-team.png" alt="Shared priority board app" style="display:block;max-width:100%;max-height:100%;object-fit:contain">
   </div>
   <div class="mockcap">Shared app. One board. Comments and decisions visible to everyone.</div>
-  <div class="slide-foot"><span>§ 06 · What sharing does</span><span class="pg">23</span></div>
+  <div class="slide-foot"><span>§ 06 · What sharing does</span><span class="pg">26</span></div>
 </section>
-<section class="layout-wall ink" data-screen-label="24 2 5 10">
+<section class="layout-wall ink" data-screen-label="27 2 5 10">
   <div class="eyebrow"><span class="num">§ 06.02</span><span>What happens when you share</span><span class="rule"></span></div>
   <h2 class="display">Count the users.</h2>
   <div class="lines">
@@ -894,9 +974,9 @@
     <div class="line frag frag-up"><div class="mk">5</div><div class="tx">You argue.</div></div>
     <div class="line hot frag frag-up"><div class="mk">10</div><div class="tx">Someone <span class="accent">forks</span> it.</div></div>
   </div>
-  <div class="slide-foot"><span>§ 06 · What sharing does</span><span class="pg">24</span></div>
+  <div class="slide-foot"><span>§ 06 · What sharing does</span><span class="pg">27</span></div>
 </section>
-<section class="layout-two" data-screen-label="25 Confluence vs app">
+<section class="layout-two" data-screen-label="28 Confluence vs app">
   <div class="eyebrow"><span class="num">§ 06.03</span><span>Why the app forces agreement</span><span class="rule"></span></div>
   <h2 class="display">You can ignore a page. Not the app that does <span class="accent">half your work.</span></h2>
   <div class="cols">
@@ -919,9 +999,9 @@
       </ul>
     </div>
   </div>
-  <div class="slide-foot"><span>§ 06 · What sharing does</span><span class="pg">25</span></div>
+  <div class="slide-foot"><span>§ 06 · What sharing does</span><span class="pg">28</span></div>
 </section>
-<section class="layout-note" data-screen-label="26 Use case vs story">
+<section class="layout-note" data-screen-label="29 Use case vs story">
   <div class="eyebrow"><span class="num">§ 06.04</span><span>Back to the demo</span><span class="rule"></span></div>
   <h2 class="display">Stop arguing. Start <span class="accent">shaping.</span></h2>
   <div class="story">Your team spent hours on "use case or user story?" With the triage app, that question is answered by what the app needs as input.<br><br><span class="hl">The debate moves from the document to the product.</span></div>
@@ -935,17 +1015,17 @@
       <div style="font-size:40px;font-weight:700">A shared process.</div>
     </div>
   </div>
-  <div class="slide-foot"><span>§ 06 · What sharing does</span><span class="pg">26</span></div>
+  <div class="slide-foot"><span>§ 06 · What sharing does</span><span class="pg">29</span></div>
 </section>
-<section class="layout-manifest" data-screen-label="27 Compromise">
+<section class="layout-manifest" data-screen-label="30 Compromise">
   <div class="eyebrow"><span class="num">§ 06.05</span><span>The hard part</span><span class="rule"></span></div>
   <div class="grow">
     <div class="body"><span class="row">Every standard is</span><span class="row">a compromise.</span><span class="row">The app makes it <span class="accent">worth it.</span></span></div>
     <div class="post">Not a sermon: happy in your chaos? Stay there.</div>
   </div>
-  <div class="slide-foot"><span>§ 06 · What sharing does</span><span class="pg">27</span></div>
+  <div class="slide-foot"><span>§ 06 · What sharing does</span><span class="pg">30</span></div>
 </section>
-<section class="layout-chain" data-screen-label="28 The chain">
+<section class="layout-chain" data-screen-label="31 The chain">
   <div class="eyebrow"><span class="num">§ 07</span><span>From app to company OS</span><span class="rule"></span></div>
   <h2 class="display">An app is never <span class="accent">just</span> an app.</h2>
   <div class="chain">
@@ -959,16 +1039,16 @@
     <div class="ar frag">→</div>
     <div class="lk end frag frag-up"><div class="n">05</div><div class="w">PM, applied to ourselves.</div><div class="d">What we do for customers every day, now for our own way of working.</div></div>
   </div>
-  <div class="slide-foot"><span>§ 07 · From app to company OS</span><span class="pg">28</span></div>
+  <div class="slide-foot"><span>§ 07 · From app to company OS</span><span class="pg">31</span></div>
 </section>
-<section class="layout-note" data-screen-label="29 Deploy path">
+<section class="layout-note" data-screen-label="32 Deploy path">
   <div class="eyebrow"><span class="num">§ 07.01</span><span>Why we didn't see it before</span><span class="rule"></span></div>
   <h2 class="display">We knew how. We lacked the <span class="accent">deploy path.</span></h2>
   <div class="story">Product people know how to manage a product: users, problems, an opinion, a roadmap. We never applied that to our own way of working, because a process on a wiki page can't be shipped. <span class="hl">Now deploying an app is self-service.</span> So the process can finally be treated as what it is: a product.</div>
   <div class="src">Before: process = page, change = meeting · now: process = app, change = release</div>
-  <div class="slide-foot"><span>§ 07 · From app to company OS</span><span class="pg">29</span></div>
+  <div class="slide-foot"><span>§ 07 · From app to company OS</span><span class="pg">32</span></div>
 </section>
-<section class="layout-sheet" data-screen-label="30 Product sheet">
+<section class="layout-sheet" data-screen-label="33 Product sheet">
   <div class="eyebrow"><span class="num">§ 07.02</span><span>Managed like a product</span><span class="rule"></span></div>
   <h2 class="display">Your process, with a <span class="accent">product owner.</span></h2>
   <div class="win">
@@ -1000,9 +1080,9 @@
       </div>
     </div>
   </div>
-  <div class="slide-foot"><span>§ 07 · From app to company OS</span><span class="pg">30</span></div>
+  <div class="slide-foot"><span>§ 07 · From app to company OS</span><span class="pg">33</span></div>
 </section>
-<section class="layout-ten" data-screen-label="31 Ten more">
+<section class="layout-ten" data-screen-label="34 Ten more">
   <div class="eyebrow"><span class="num">§ 07.03</span><span>The same move, ten more times</span><span class="rule"></span></div>
   <h2 class="display">Ten more processes that want to be <span class="accent">apps.</span></h2>
   <div class="win">
@@ -1028,9 +1108,9 @@
       </div>
     </div>
   </div>
-  <div class="slide-foot"><span>§ 07 · From app to company OS</span><span class="pg">31</span></div>
+  <div class="slide-foot"><span>§ 07 · From app to company OS</span><span class="pg">34</span></div>
 </section>
-<section class="layout-machine" data-screen-label="32 Product machine">
+<section class="layout-machine" data-screen-label="35 Product machine">
   <div class="eyebrow"><span class="num">§ 07.04</span><span>Zoom out</span><span class="rule"></span></div>
   <h2 class="display">Chain the apps: a product <span class="accent">machine.</span></h2>
   <div class="machine">
@@ -1052,9 +1132,9 @@
     </div>
     <div class="base frag frag-up"><div>Platform</div><div>Shared context</div><div>Shared skills</div><div>One runtime</div><div>Access &amp; data</div></div>
   </div>
-  <div class="slide-foot"><span>§ 07 · From app to company OS</span><span class="pg">32</span></div>
+  <div class="slide-foot"><span>§ 07 · From app to company OS</span><span class="pg">35</span></div>
 </section>
-<section class="layout-os" data-screen-label="33 Company OS">
+<section class="layout-os" data-screen-label="36 Company OS">
   <div class="eyebrow"><span class="num">§ 07.05</span><span>Zoom out again</span><span class="rule"></span></div>
   <h2 class="display">Many machines. One company <span class="accent">OS.</span></h2>
   <div class="win">
@@ -1104,9 +1184,9 @@
       </div>
     </div>
   </div>
-  <div class="slide-foot"><span>§ 07 · From app to company OS</span><span class="pg">33</span></div>
+  <div class="slide-foot"><span>§ 07 · From app to company OS</span><span class="pg">36</span></div>
 </section>
-<section class="layout-two dual big" data-screen-label="34 Right questions">
+<section class="layout-two dual big" data-screen-label="37 Right questions">
   <div class="eyebrow"><span class="num">§ 07.06</span><span>Why the words matter</span><span class="rule"></span></div>
   <h2 class="display">The words ask the right <span class="accent">questions.</span></h2>
   <div class="cols">
@@ -1129,9 +1209,9 @@
       </ul>
     </div>
   </div>
-  <div class="slide-foot"><span>§ 07 · From app to company OS</span><span class="pg">34</span></div>
+  <div class="slide-foot"><span>§ 07 · From app to company OS</span><span class="pg">37</span></div>
 </section>
-<section class="layout-closing ink" data-screen-label="35 The end">
+<section class="layout-closing ink" data-screen-label="38 The end">
   <div class="eyebrow"><span class="num">§ FIN</span><span>Digitale Leute Summit · Köln</span><span class="rule"></span></div>
   <h2 class="display"><span class="row">Ship it</span><span class="row accent">together.</span></h2>
   <div class="people">
